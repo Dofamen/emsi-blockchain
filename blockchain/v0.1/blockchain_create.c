@@ -18,7 +18,7 @@ blockchain_t *blockchain_create(void){
 	int _timestamp =	1537578000;
 	
 
-	genesis = (block_t *)malloc(sizeof(*genesis));
+	genesis = (block_t*)malloc(sizeof(*genesis));
 
 	if (genesis == NULL) return NULL;
 
