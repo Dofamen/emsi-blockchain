@@ -1,16 +1,21 @@
 #include "blockchain.h"
-
 /**
- * block_mine - mines a block with requisite difficulty
- * @block: pointer to block to mine
+ * block_mine - mining by changing the nonce
+ * @block: the mined block
  */
 void block_mine(block_t *block)
 {
-	uint64_t nonce = 0;
+uint8_t blockHash[SHA256_DIGEST_LENGTH];
+block_hash(block, blockHash);
+if (!hash_matches_difficulty(blockHash, block->info.difficulty))
+{
+block->info.nonce = 0;
+do {
+block->info.nonce++;
+block_hash(block, blockHash);
+} while (!hash_matches_difficulty(blockHash,
+block->info.difficulty));
 
-	do {
-		block->info.nonce = nonce;
-		block_hash(block, block->hash);
-		nonce++;
-	} while (!hash_matches_difficulty(block->hash, block->info.difficulty));
+memcpy(block->hash, blockHash, SHA256_DIGEST_LENGTH);
+}
 }
